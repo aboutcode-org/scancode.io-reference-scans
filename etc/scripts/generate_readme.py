@@ -1,3 +1,4 @@
+from datetime import datetime
 from os.path import abspath
 from os.path import dirname
 from os.path import join
@@ -39,6 +40,7 @@ NGINX_PROJECT_UUIDS = (
     "d6131a17-83af-4f52-82dd-575f75739c22",
 )
 WINDOWS_MONGO_PROJECT_UUIDS = (
+    "e5b899b7-79d1-418c-9432-138990ff594a",
     "6d682971-ef06-4894-8705-34db5397c2ac",
 )
 WINDOWS_PYTHON_PROJECT_UUIDS = (
@@ -64,7 +66,7 @@ class ProjectStats:
         self,
         name,
         uuid,
-        project_api_url,
+        pipeline_name,
         created_date,
         dp_total,
         dp_missing_resources,
@@ -80,7 +82,7 @@ class ProjectStats:
     ):
         self.name = name
         self.uuid = uuid
-        self.project_api_url = project_api_url
+        self.pipeline_name = pipeline_name
         self.created_date = created_date
         self.dp_total = dp_total
         self.dp_missing_resources = dp_missing_resources
@@ -107,12 +109,18 @@ class ProjectStats:
         json_response = response.json()
         name = json_response.get("name", "")
         created_date = json_response.get("created_date", "")
+        if created_date:
+            created_date = datetime.strptime(created_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+            created_date = created_date.strftime("%Y-%m-%d")
+        runs = json_response.get("runs", [])
+        if runs:
+            pipeline_name = runs[0].get("pipeline_name", "")
         codebase_resources_summary = json_response.get("codebase_resources_summary", {})
         discovered_package_summary = json_response.get("discovered_package_summary", {})
         return cls(
             name=name,
             uuid=uuid,
-            project_api_url=project_page,
+            pipeline_name=pipeline_name,
             created_date=created_date,
             dp_total=discovered_package_summary.get("total", 0),
             dp_missing_resources=discovered_package_summary.get("with_missing_resources", 0),
