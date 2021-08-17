@@ -31,10 +31,6 @@ ELASTICSEARCH_PROJECT_UUIDS = (
     "b26c3df4-c701-4b10-a950-b4ce89c5e714",
     "0b89a4e3-4afc-4c00-8f35-be741f201c8a",
 )
-ALPINE_PROJECT_UUIDS = (
-    "727f7191-4087-41f4-9c70-b5cf5058433f",
-    "634adeda-d453-48c4-ba4d-1e06e0e47b77",
-)
 NGINX_PROJECT_UUIDS = (
     "f865228e-f0d5-40e2-bb0d-298b35f3c706",
     "d6131a17-83af-4f52-82dd-575f75739c22",
@@ -44,6 +40,7 @@ WINDOWS_MONGO_PROJECT_UUIDS = (
     "6d682971-ef06-4894-8705-34db5397c2ac",
 )
 WINDOWS_PYTHON_PROJECT_UUIDS = (
+    "721d6f32-e489-4eb6-90d6-b8c1ff123d96",
     "a2939084-9d89-48a5-aedd-66a972264be0",
     "336543c7-74cb-4a31-9be2-0f2ae9aba6ab",
 )
@@ -158,7 +155,7 @@ def generate_readme(template=TEMPLATE_PATH):
     rendered = template.render(
         debian_buster_slim_project_stats=collect_project_stats(DEBIAN_BUSTER_SLIM_PROJECT_UUIDS),
         elasticsearch_project_stats=collect_project_stats(ELASTICSEARCH_PROJECT_UUIDS),
-        alpine_project_stats=collect_project_stats(ALPINE_PROJECT_UUIDS),
+        alpine_nginx_project_stats=collect_project_stats(NGINX_PROJECT_UUIDS),
         mongo_project_stats=collect_project_stats(WINDOWS_MONGO_PROJECT_UUIDS),
         windows_python_project_stats=collect_project_stats(WINDOWS_PYTHON_PROJECT_UUIDS),
         distroless_project_stats=collect_project_stats(DISTROLESS_PROJECT_UUIDS),
