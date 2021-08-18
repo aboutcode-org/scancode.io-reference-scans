@@ -20,7 +20,11 @@ TEMPLATE_PATH = join(PROJECT_ROOT_PATH, "etc", "scripts", "readme.template")
 SCANCODE_IO_PROJECTS_ENDPOINT = "http://staging.scancode.io/api/projects/"
 SCANCODE_IO_USER = os.environ.get("SCANCODE_IO_USER", "")
 SCANCODE_IO_PASSWORD = os.environ.get("SCANCODE_IO_PASSWORD", "")
-SCANCODE_IO_AUTH = (SCANCODE_IO_USER, SCANCODE_IO_PASSWORD)
+
+scancode_io_auth = os.environ.get("SCANCODE_IO_AUTH")
+if scancode_io_auth:
+    scancode_io_auth = tuple(scancode_io_auth.split(":"))
+SCANCODE_IO_AUTH = scancode_io_auth or (SCANCODE_IO_USER, SCANCODE_IO_PASSWORD)
 
 
 DEBIAN_BUSTER_SLIM_PROJECT_UUIDS = (
@@ -145,6 +149,8 @@ def collect_project_stats(project_uuid_group):
         if not p:
             continue
         project_stats.append(p)
+    # Sort projects from newest to oldest
+    project_stats = sorted(project_stats, key=lambda x: x.created_date, reverse=True)
     return project_stats
 
 
